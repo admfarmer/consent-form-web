@@ -1,0 +1,36 @@
+<div class="modal-body">
+  <section class="form-block">
+    <div class="modal-body">
+
+      <h3 class="modal-title">รายงานลงทะเบียน Consent Form</h3>
+
+      <clr-datagrid>
+        <clr-dg-column [clrDgField]="'cid'">เลขบัตรประชาชน</clr-dg-column>
+        <clr-dg-column [clrDgField]="'fullname'">ชื่อ - สกุล</clr-dg-column>
+        <clr-dg-column [clrDgField]="'sex'">เพศ</clr-dg-column>
+        <clr-dg-column [clrDgField]="'telephone'">เบอร์โทรศัพท์</clr-dg-column>
+        <clr-dg-column [clrDgField]="'date_reg'" [clrDgSortOrder]="descSort">วัน เวลา ลงทะเบียน</clr-dg-column>
+        <clr-dg-column [clrDgField]="'register'">ผู้บันทึก</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let i of items">
+          <clr-dg-cell>{{i.cid}}</clr-dg-cell>
+          <clr-dg-cell>{{i.title}}{{i.fullname}}</clr-dg-cell>
+          <clr-dg-cell *ngIf="i.sex == '1'">ชาย</clr-dg-cell>
+          <clr-dg-cell *ngIf="i.sex == '2'">หญิง</clr-dg-cell>
+          <clr-dg-cell>{{i.telephone}}</clr-dg-cell>
+          <clr-dg-cell>{{i.date_reg | date:'yyyy-MM-dd HH:mm:ss'}}</clr-dg-cell>
+          <clr-dg-cell>{{i.register}}</clr-dg-cell>
+        </clr-dg-row>
+
+        <!-- <clr-dg-footer>{{items.length}} items</clr-dg-footer> -->
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">items per page</clr-dg-page-size>
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+            of {{pagination.totalItems}} items
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    </div>
+  </section>
+</div>
