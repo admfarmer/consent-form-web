@@ -2,10 +2,10 @@ var express = require('express')
 var app = express()
 var path = require('path');
 
-app.use(express.static(path.join(__dirname, 'dist/time-official-web')));
+app.use(express.static(path.join(__dirname, 'dist/consent-form-web')));
 
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, './dist/time-official-web/index.html'));
+  res.sendFile(path.join(__dirname, './dist/consent-form-web/index.html'));
 });
 
 // catch 404 and forward to error handler
