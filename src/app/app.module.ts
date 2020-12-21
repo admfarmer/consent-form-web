@@ -37,8 +37,8 @@ export const whitelistedDomains = [new RegExp('[\s\S]*')] as RegExp[];
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: whitelistedDomains,
-        blacklistedRoutes: ['/login']
+        // whitelistedDomains: whitelistedDomains,
+        // blacklistedRoutes: ['/login']
       }
     }),
     AdminModule,
