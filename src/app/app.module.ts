@@ -45,7 +45,7 @@ export const whitelistedDomains = [new RegExp('[\s\S]*')] as RegExp[];
     LoginModule
   ],
   providers: [
-    // { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: 'API_URL', useValue: environment.apiUrl },
   ],
   bootstrap: [AppComponent]
