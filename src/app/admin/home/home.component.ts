@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { AlertService } from 'src/app/shared/alert.service'
 import { ConsentFormService } from 'src/app/shared/consentform.service';
 import { ClrDatagridSortOrder } from '@clr/angular';
+
+import { FileuploadConsentFormService } from 'src/app/shared/fileupload.service'
 import * as moment from 'moment-timezone';
 
 
@@ -20,7 +22,9 @@ export class HomeComponent implements OnInit {
   descSort: any;
 
   edit: boolean = false;
+  uploadfile: boolean = false;
 
+  id: any;
   cid: any;
   hcode: any;
   title: any;
@@ -32,10 +36,34 @@ export class HomeComponent implements OnInit {
   detail: any;
   register: any;
   date_reg: any;
+  file_path: any;
+
+  yourFile: File;
+
+
+  filePath: string;
+  fileName: any;
+  files: Array<any> = [];
+  isUpoading: boolean = false;
+
+  isupdate: boolean = false;
+  open: Boolean = false;
+  isUploading = false;
+  loadingFiles = false;
+
+  fieldName: any;
+  filesToUpload: Array<File>;
+  documentCode: any;
+  token: any;
+  document_id: any;
+  file_name: any;
+
 
   constructor(
     private alertService: AlertService,
     private consentFormService: ConsentFormService,
+    private fileuploadConsentFormService: FileuploadConsentFormService,
+    @Inject('DOC_URL') private docUrl: string,
 
   ) { }
 
@@ -111,4 +139,94 @@ export class HomeComponent implements OnInit {
   async Save() {
 
   }
+
+  file(i) {
+    this.cid = i.cid;
+    this.filesToUpload = [null];
+  }
+
+  // getFile(fileInput) {
+  //   this.yourFile = fileInput.target.files[0];
+
+  // }
+
+  // file upload
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = [];
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+  }
+
+  async upload(_cid: any) {
+    console.log(_cid);
+
+
+    this.isUploading = true;
+    this.documentCode = _cid;
+    console.log(this.documentCode);
+    console.log(this.filesToUpload);
+
+    try {
+      const result: any = await this.fileuploadConsentFormService.makeFileRequest(this.documentCode, this.filesToUpload)
+      this.isUploading = false;
+      if (result.ok) {
+        this.filesToUpload = [];
+        this.alertService.success();
+        this.gitInfo();
+      } else {
+        this.alertService.error(JSON.stringify(result.error));
+      }
+
+    } catch (error) {
+      this.isUploading = false;
+      this.alertService.error(JSON.stringify(error));
+    }
+  }
+
+  async getFilesList(v: any) {
+    let _document_id: any;
+    let _file_name: any;
+    let _no: any;
+    this.files = [];
+    this.loadingFiles = true;
+    let result: any = await this.fileuploadConsentFormService.getFiles(v.cid);
+    if (result.rows) {
+      _document_id = result.rows.document_id,
+        _file_name = result.rows.file_name
+    } else {
+      _document_id = null;
+      _file_name = null;
+    }
+
+    let _info = {
+      an: v.an,
+      fullname: v.fullname,
+      ward: v.ward,
+      prediag: v.prediag,
+      rgtdate: v.rgtdate,
+      daycnt: v.daycnt,
+      document_id: _document_id,
+      file_name: _file_name
+    }
+    console.log(_info);
+    this.items.push(_info);
+    this.loadingFiles = false;
+
+  }
+
+  getFile(documentId) {
+    const url = `${this.docUrl}/uploads/files/${documentId}`;
+    window.open(url, '_blank');
+  }
+
+  async removeFile(documentId, idx) {
+    this.alertService.confirm('คุณต้องการลบไฟล์นี้ ใช่หรือไม่?')
+      .then(() => {
+        this.fileuploadConsentFormService.removeFile(documentId)
+        this.gitInfo();
+      })
+      .catch(() => {
+        // cancel
+      });
+  }
+
 }

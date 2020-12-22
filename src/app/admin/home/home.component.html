@@ -10,6 +10,7 @@
         <clr-dg-column [clrDgField]="'sex'">เพศ</clr-dg-column>
         <clr-dg-column [clrDgField]="'telephone'">เบอร์โทรศัพท์</clr-dg-column>
         <clr-dg-column [clrDgField]="'date_reg'" [clrDgSortOrder]="descSort">วัน เวลา ลงทะเบียน</clr-dg-column>
+        <clr-dg-column>File</clr-dg-column>
         <clr-dg-column [clrDgField]="'register'">ผู้บันทึก</clr-dg-column>
         <clr-dg-column>##</clr-dg-column>
 
@@ -20,6 +21,16 @@
           <clr-dg-cell *ngIf="i.sex == '2'">หญิง</clr-dg-cell>
           <clr-dg-cell>{{i.telephone}}</clr-dg-cell>
           <clr-dg-cell>{{i.date_reg | date:'yyyy-MM-dd HH:mm:ss'}}</clr-dg-cell>
+          <clr-dg-cell>
+            <div class="btn-group btn-sm">
+              <button class="btn" *ngIf="i.file_path" (click)="getFile(i.document_id)">
+                <clr-icon shape="picture" class="has-badge"></clr-icon>
+              </button>
+              <button class="btn" (click)="uploadfile = true" *ngIf="!i.file_path" (click)="file(i)">
+                <clr-icon shape="arrow"></clr-icon>
+              </button>
+            </div>
+          </clr-dg-cell>
           <clr-dg-cell>{{i.register}}</clr-dg-cell>
           <clr-dg-cell>
             <div class="btn-group btn-outline-primary btn-sm">
@@ -103,5 +114,16 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="Save()">Save</button>
     <button type="button" class="btn btn-primary" (click)="edit = false">Close</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="uploadfile" [clrModalClosable]="false" [clrModalSize]="'gl'">
+  <h3 class="modal-title">Upload File Consent Form</h3>
+  <div class="modal-body">
+    <input type="file" (change)="fileChangeEvent($event)" #fileUpload>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="upload(cid)">Save</button>
+    <button type="button" class="btn btn-primary" (click)="uploadfile = false">Close</button>
   </div>
 </clr-modal>
