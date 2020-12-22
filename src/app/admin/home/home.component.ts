@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { AlertService } from 'src/app/shared/alert.service'
 import { ConsentFormService } from 'src/app/shared/consentform.service';
 import { ClrDatagridSortOrder } from '@clr/angular';
+import * as moment from 'moment-timezone';
+
 
 @Component({
   selector: 'app-home',
@@ -16,6 +18,20 @@ export class HomeComponent implements OnInit {
   hospcode: string;
   fullname: string;
   descSort: any;
+
+  edit: boolean = false;
+
+  cid: any;
+  hcode: any;
+  title: any;
+  name: any;
+  sex: any;
+  telephone: any;
+  expiration: any;
+  status: any;
+  detail: any;
+  register: any;
+  date_reg: any;
 
   constructor(
     private alertService: AlertService,
@@ -59,4 +75,40 @@ export class HomeComponent implements OnInit {
 
   }
 
+  async consentEdit(item: any) {
+    console.log(item);
+
+    this.cid = item.cid;
+    this.hcode = item.hospcode;
+    this.title = item.title;
+    this.name = item.fullname;
+    this.sex = item.sex;
+    this.telephone = item.telephone;
+    this.expiration = moment(item.expiration).tz('Asia/Bangkok').format('YYYY-MM-DD');
+    this.status = item.status;
+    this.detail = item.detail;
+    this.register = item.register;
+    this.date_reg = moment(item.date_reg).tz('Asia/Bangkok').format('YYYY-MM-DD');
+
+    this.edit = true;
+
+  }
+
+  async consentDel(item: any) {
+    console.log(item);
+    try {
+      let alert = await this.alertService.confirm();
+      if (alert) {
+        const rs: any = await this.consentFormService.remove(item.id);
+        this.gitInfo();
+      }
+
+    } catch (error) {
+      console.log(error);
+      this.alertService.error();
+    }
+  }
+  async Save() {
+
+  }
 }

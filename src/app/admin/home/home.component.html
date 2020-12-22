@@ -11,6 +11,7 @@
         <clr-dg-column [clrDgField]="'telephone'">เบอร์โทรศัพท์</clr-dg-column>
         <clr-dg-column [clrDgField]="'date_reg'" [clrDgSortOrder]="descSort">วัน เวลา ลงทะเบียน</clr-dg-column>
         <clr-dg-column [clrDgField]="'register'">ผู้บันทึก</clr-dg-column>
+        <clr-dg-column>##</clr-dg-column>
 
         <clr-dg-row *clrDgItems="let i of items">
           <clr-dg-cell>{{i.cid}}</clr-dg-cell>
@@ -20,6 +21,12 @@
           <clr-dg-cell>{{i.telephone}}</clr-dg-cell>
           <clr-dg-cell>{{i.date_reg | date:'yyyy-MM-dd HH:mm:ss'}}</clr-dg-cell>
           <clr-dg-cell>{{i.register}}</clr-dg-cell>
+          <clr-dg-cell>
+            <div class="btn-group btn-outline-primary btn-sm">
+              <button class="btn btn-primary" (click)="consentEdit(i)">Edit</button>
+              <button class="btn btn-danger" (click)="consentDel(i)">Del</button>
+            </div>
+          </clr-dg-cell>
         </clr-dg-row>
 
         <!-- <clr-dg-footer>{{items.length}} items</clr-dg-footer> -->
@@ -34,3 +41,67 @@
     </div>
   </section>
 </div>
+
+<clr-modal [(clrModalOpen)]="edit" [clrModalClosable]="false" [clrModalSize]="'gl'">
+  <h3 class="modal-title">แก้ไข ผู้ทะเบียน Consent Form</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-input-container>
+        <label>cid</label>
+        <input type="text" clrInput name="cid" [(ngModel)]="cid" />
+      </clr-input-container>
+      <clr-input-container>
+        <label>hospcode</label>
+        <input type="text" clrInput name="hospcode" [(ngModel)]="hospcode" />
+      </clr-input-container>
+      <clr-input-container>
+        <label>title</label>
+        <input type="text" clrInput name="title" [(ngModel)]="title" />
+      </clr-input-container>
+      <clr-input-container>
+        <label>ชื่อ - สกุล</label>
+        <input type="text" clrInput name="name" [(ngModel)]="name" />
+      </clr-input-container>
+      <clr-select-container>
+        <label>sex</label>
+        <select clrSelect name="sex" [(ngModel)]="sex">
+          <option value="1">ชาย</option>
+          <option value="2">หญิง</option>
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label>telephone</label>
+        <input type="text" clrInput name="telephone" [(ngModel)]="telephone" />
+      </clr-input-container>
+      <clr-input-container>
+        <label>expiration</label>
+        <input type="date" clrInput name="expiration" [(ngModel)]="expiration" />
+      </clr-input-container>
+      <clr-select-container>
+        <label>status</label>
+        <select clrSelect name="status" [(ngModel)]="status">
+          <option value="0">ตัวผู้รับบริการ</option>
+          <option value="1">คนในครอบครัว</option>
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label>detail</label>
+        <input type="text" clrInput name="detail" [(ngModel)]="detail" />
+      </clr-input-container>
+      <clr-input-container>
+        <label>register</label>
+        <input type="text" clrInput name="register" [(ngModel)]="register" />
+      </clr-input-container>
+      <clr-input-container>
+        <label>date_reg</label>
+        <input type="date" clrInput name="date_reg" [(ngModel)]="date_reg" />
+      </clr-input-container>
+    </form>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="Save()">Save</button>
+    <button type="button" class="btn btn-primary" (click)="edit = false">Close</button>
+  </div>
+</clr-modal>

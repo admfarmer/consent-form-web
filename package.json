@@ -25,6 +25,7 @@
     "@clr/icons": "^4.0.8",
     "@clr/ui": "^4.0.8",
     "@webcomponents/webcomponentsjs": "^2.5.0",
+    "moment-timezone": "^0.5.32",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.12.5",
     "tslib": "^2.0.0",
