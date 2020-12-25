@@ -106,6 +106,7 @@ export class HomeComponent implements OnInit {
   async consentEdit(item: any) {
     console.log(item);
 
+    this.id = item.id;
     this.cid = item.cid;
     this.hcode = item.hospcode;
     this.title = item.title;
@@ -122,6 +123,48 @@ export class HomeComponent implements OnInit {
 
   }
 
+  async Save() {
+    let info = {
+      cid: this.cid,
+      hospcode: this.hcode,
+      title: this.title,
+      fullname: this.name,
+      sex: this.sex,
+      telephone: this.telephone,
+      expiration: moment(this.expiration).tz('Asia/Bangkok').format('YYYY-MM-DD'),
+      status: this.status,
+      detail: this.detail,
+      register: this.register,
+      date_reg: this.date_reg
+    }
+
+    console.log('ID : ', this.id, '  ', 'info : ', info);
+
+    try {
+      const rs: any = await this.consentFormService.update(this.id, info);
+      this.gitInfo();
+      this.id = null;
+      this.cid = null;
+      this.hcode = null;
+      this.title = null;
+      this.name = null;
+      this.sex = null;
+      this.telephone = null;
+      this.expiration = null;
+      this.status = null;
+      this.detail = null;
+      this.register = null;
+      this.date_reg = null;
+
+      this.edit = false;
+
+
+    } catch (error) {
+      console.log(error);
+      this.alertService.error();
+    }
+  }
+
   async consentDel(item: any) {
     console.log(item);
     try {
@@ -136,19 +179,12 @@ export class HomeComponent implements OnInit {
       this.alertService.error();
     }
   }
-  async Save() {
 
-  }
-
-  file(i) {
+  file(i: any) {
     this.cid = i.cid;
     this.filesToUpload = [null];
   }
 
-  // getFile(fileInput) {
-  //   this.yourFile = fileInput.target.files[0];
-
-  // }
 
   // file upload
   fileChangeEvent(fileInput: any) {
