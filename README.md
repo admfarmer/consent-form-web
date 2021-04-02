@@ -6,15 +6,14 @@
 git clone https://github.com/admfarmer/consent-form-web.git consent-form-web
 cd consent-form-web
 npm i
-
-nano src/environments/environments.prod.ts
-nano server.js
-
 ```
 
 ## Running
 
 ```
+nano src/environments/environments.prod.ts
+nano server.js
+
 npm run build
 ```
 
